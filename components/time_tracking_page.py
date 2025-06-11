@@ -19,24 +19,46 @@ class TimeTrackingPage():
         hora_atual = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         st.info(hora_atual)
 
-        # Espaço entre botões de entrada e saída
-        col1, col2 = st.columns(2)
-
-        # Inicializa lista de registros se não existir
+        # Inicializa os estados
         if "ponto_registrado" not in st.session_state:
             st.session_state.ponto_registrado = []
 
+        if "entrada_registrada" not in st.session_state:
+            st.session_state.entrada_registrada = False
+
+        if "saida_registrada" not in st.session_state:
+            st.session_state.saida_registrada = False
+
+        col1, col2 = st.columns(2)
+
         with col1:
-            if st.button("🟢 Registrar Entrada", use_container_width=True):
+            # Desativa o botão se entrada já foi registrada e saída ainda não
+            entrada_btn_disabled = st.session_state.entrada_registrada and not st.session_state.saida_registrada
+
+            if st.button("🟢 Registrar Entrada", use_container_width=True, disabled=entrada_btn_disabled):
                 timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 st.session_state.ponto_registrado.append({"tipo": "entrada", "hora": timestamp})
-                st.success(f"Entrada registrada em {timestamp}")
+                st.session_state.entrada_registrada = True
+                st.session_state.saida_registrada = False
+                # st.success(f"Entrada registrada em {timestamp}")
+
+            # Mostrar hora da última entrada
+            if st.session_state.entrada_registrada:
+                ultima_entrada = [p for p in st.session_state.ponto_registrado if p["tipo"] == "entrada"][-1]
+                st.markdown(f"🕒 Última entrada: `{ultima_entrada['hora']}`")
 
         with col2:
             if st.button("🔴 Registrar Saída", use_container_width=True):
                 timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 st.session_state.ponto_registrado.append({"tipo": "saida", "hora": timestamp})
-                st.success(f"Saída registrada em {timestamp}")
+                st.session_state.saida_registrada = True
+                st.session_state.entrada_registrada = False  # Libera o botão de entrada novamente
+                # st.success(f"Saída registrada em {timestamp}")
+
+                # Mostrar hora da última saída
+            if st.session_state.saida_registrada:
+                ultima_saida = [p for p in st.session_state.ponto_registrado if p["tipo"] == "saida"][-1]
+                st.markdown(f"🕒 Última saída: `{ultima_saida['hora']}`")
 
         st.markdown("---")
         st.subheader("Outras opções:")

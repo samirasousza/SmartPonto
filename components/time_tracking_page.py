@@ -1,7 +1,12 @@
+from services.ConsultarPonto import get_check_in
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from datetime import datetime
+from datetime import date
 import time
+from services.check_in import check_in
+from services.check_out import check_out
+
 
 class TimeTrackingPage():
     def __init__(self):
@@ -10,7 +15,7 @@ class TimeTrackingPage():
     @staticmethod
     def render():
         # Atualiza a página a cada 1 segundo
-        st_autorefresh(interval=1000, key="refresh_timer")
+        #st_autorefresh(interval=1000, key="refresh_timer")
 
         st.title("Registro de Ponto")
 
@@ -30,12 +35,17 @@ class TimeTrackingPage():
             if st.button("🟢 Registrar Entrada", use_container_width=True):
                 timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 st.session_state.ponto_registrado.append({"tipo": "entrada", "hora": timestamp})
+                check_in(st.session_state.card_id, str(datetime.now().timestamp()), str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
+                print(f"Id {st.session_state.card_id} data {str(datetime.now().timestamp())} dia {str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp())}")
                 st.success(f"Entrada registrada em {timestamp}")
 
         with col2:
             if st.button("🔴 Registrar Saída", use_container_width=True):
                 timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 st.session_state.ponto_registrado.append({"tipo": "saida", "hora": timestamp})
+                check_out(st.session_state.card_id, str(datetime.now().timestamp()), str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
+                print(f"Id {st.session_state.card_id} data {str(datetime.now().timestamp())} dia {str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp())}")
+
                 st.success(f"Saída registrada em {timestamp}")
 
         st.markdown("---")
@@ -43,10 +53,19 @@ class TimeTrackingPage():
 
         # Coluna vertical de botões
         if st.button("📝 Justificar Falta", use_container_width=True):
+
             st.session_state.page = "justify_page"
 
         if st.button("📋 Ver Pontos Marcados", use_container_width=True):
             st.session_state.page = "history_page"
+            check_in_time, check_out_time, excused, excuse = get_check_in(st.session_state.card_id, str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
+            print(str(date.today()))
+            print(str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
+            print("aaaaa")
+            print(check_in_time)
+            print(check_out_time)
+            print(excused)
+            print(excuse)
 
         if st.button("🔙 Sair", use_container_width=True):
             st.session_state.page = "login_page"

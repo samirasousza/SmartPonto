@@ -1,6 +1,8 @@
 import streamlit as st
 from components.login_page import LoginPage
 from components.time_tracking_page import TimeTrackingPage
+from components.history_page import HistoryPage
+from components.justify_page import JustifyPage
 from dotenv import load_dotenv
 from web3 import Web3
 import os
@@ -295,7 +297,9 @@ class App:
             LoginPage().render()  # Chama a função show() do login.py
         elif st.session_state.page == "time_tracking_page":
             TimeTrackingPage().render()
-
-        # login_page = LoginPage().render()
+        elif st.session_state.page == "justify_page":
+            JustifyPage().render()
+        elif st.session_state.page == "history_page":
+            HistoryPage().render()
 
 App.run()

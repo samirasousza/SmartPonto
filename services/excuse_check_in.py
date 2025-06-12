@@ -1,4 +1,3 @@
-import datetime
 import streamlit as st
 
 def excuse_check_in(card_id, timestamp, date, excuse):
@@ -25,12 +24,12 @@ def excuse_check_in(card_id, timestamp, date, excuse):
         logs = st.contract.events.Aviso().process_receipt(receipt)
 
         if logs:
-            product_values = logs[0]['args']
-            st.info(f"📡 Evento capturado: informações do produto armazenado foi `{product_values}`")
+            values = logs[0]['args']
+            st.info(f"Evento capturado: informações  `{values}`")
             return True, "Registro realizado!"
         else:
-            st.warning("⚠️ Nenhum evento ProductRegistered encontrado na transação.")
-            return False, f"Erro ao processar produto"
+            st.warning("⚠️ Nenhum evento encontrado na transação.")
+            return False, f"Erro ao processar "
     except Exception as e:
         st.error(f"Erro ao enviar transação: {str(e)}")
-        return False, f"Erro ao processar produto: {str(e)}"
+        return False, f"Erro ao processar : {str(e)}"

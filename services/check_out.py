@@ -25,12 +25,12 @@ def check_out(card_id, timestamp, date):
 
         if log:
             product_values = log[0]['args']
-            st.info(f"📡 Evento capturado: informações do produto armazenado foi  test`{product_values}`")
+            st.info(f"Evento capturado: informações `{product_values}`")
             return True, "Registro realizado!"
         if not log:
-            st.warning("⚠️ Nenhum evento TEst encontrado na transação.")
-            return False, f"Erro ao processar produto"
+            st.warning("⚠️ Nenhum evento  encontrado na transação.")
+            return False, f"Erro ao processar "
         
     except Exception as e:
         st.error(f"Erro ao enviar transação: {str(e)}")
-        return False, f"Erro ao processar produto: {str(e)}"
+        return False, f"Erro ao processar : {str(e)}"

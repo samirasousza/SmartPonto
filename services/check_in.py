@@ -7,7 +7,7 @@ def check_in(cardid, timestamp, date):
         # Constrói a transação em formato de dicionário Python, com os dados necessários para enviá-la à rede Ethereum.
         tx = st.contract.functions.checkIn(cardid, timestamp, date).build_transaction({
             'chainId': 11155111,  # Sepolia
-            'gas': 500000, #Quantidade máxima de gás que a transação pode consumir. Fixado em 200000 unidades, o que é mais do que suficiente para essa função simples.
+            'gas': 200000, #Quantidade máxima de gás que a transação pode consumir. Fixado em 200000 unidades, o que é mais do que suficiente para essa função simples.
             'gasPrice': st.w3.to_wei('10', 'gwei'), #Define o preço do gás a ser pago por unidade. Convertido de 10 gwei para wei (menor unidade do ETH) usando w3.to_wei(...).
             'nonce': nonce #Define o nonce, ou seja, o número de transações já enviadas pela conta. Garante que cada transação tenha um número único, necessário para ser aceita pela rede.
         })
@@ -25,12 +25,12 @@ def check_in(cardid, timestamp, date):
 
         if log:
             product_values = log[0]['args']
-            st.info(f"📡 Evento capturado: informações do produto armazenado foi  test`{product_values}`")
+            st.info(f"Evento capturado: informações `{product_values}`")
             return True, "Registro realizado!"
         if not log:
-            st.warning("⚠️ Nenhum evento TEst encontrado na transação.")
-            return False, f"Erro ao processar produto"
+            st.warning("⚠️ Nenhum evento encontrado na transação.")
+            return False, f"Erro ao processar "
         
     except Exception as e:
         st.error(f"Erro ao enviar transação: {str(e)}")
-        return False, f"Erro ao processar produto: {str(e)}"
+        return False, f"Erro ao processar: {str(e)}"

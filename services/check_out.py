@@ -1,3 +1,4 @@
+from datetime import datetime
 import streamlit as st
 
 def check_out(card_id, timestamp, date):
@@ -15,21 +16,12 @@ def check_out(card_id, timestamp, date):
         signed_tx = st.w3.eth.account.sign_transaction(tx, st.private_key)
         tx_hash = st.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
 
-        st.success(f"✅ Transação enviada com sucesso!\nHash: {tx_hash.hex()}")
+        st.success(f"Saída registrada em {datetime.fromtimestamp(float(timestamp)).strftime('%H:%M:%S %d-%m-%Y')}")
 
         # Espera a transação ser minerada
         receipt = st.w3.eth.wait_for_transaction_receipt(tx_hash)
         print(receipt.logs)
-        # Lê os eventos emitidos na transação
-        log = st.contract.events.Aviso().process_receipt(receipt)
-
-        if log:
-            product_values = log[0]['args']
-            st.info(f"Evento capturado: informações `{product_values}`")
-            return True, "Registro realizado!"
-        if not log:
-            st.warning("⚠️ Nenhum evento  encontrado na transação.")
-            return False, f"Erro ao processar "
+       
         
     except Exception as e:
         st.error(f"Erro ao enviar transação: {str(e)}")

@@ -52,12 +52,7 @@ class TimeTrackingPage():
                 print(f"Id {st.session_state.card_id} data {str(datetime.now().timestamp())} dia {str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp())}")
                 st.session_state.entrada_registrada = True
                 st.session_state.saida_registrada = False
-                # st.success(f"Entrada registrada em {timestamp}")
 
-            # Mostrar hora da ultima entrada
-            if st.session_state.entrada_registrada:
-                ultima_entrada = [p for p in st.session_state.ponto_registrado if p["tipo"] == "entrada"][-1]
-                st.markdown(f"🕒 Última entrada: `{ultima_entrada['hora']}`")
 
         with col2:
             if st.button("🔴 Registrar Saída", use_container_width=True):
@@ -67,8 +62,6 @@ class TimeTrackingPage():
                 
                 # Criando dados ficticios
                 #check_out("1111", str(datetime.today().replace(day= 7,hour=18, minute=40, second=42, microsecond=0).timestamp()), str(datetime.today().replace(day= 7, hour=0, minute=0, second=0, microsecond=0).timestamp()))
-
-                st.success(f"Saída registrada em {timestamp}")
 
         st.markdown("---")
         st.subheader("Outras opções:")
@@ -80,14 +73,6 @@ class TimeTrackingPage():
 
         if st.button("📋 Ver Pontos Marcados", use_container_width=True):
             st.session_state.page = "history_page"
-            check_in_time, check_out_time, excused, excuse = get_check_in(st.session_state.card_id, str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
-            print(str(date.today()))
-            print(str(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()))
-            print("aaaaa")
-            print(check_in_time)
-            print(check_out_time)
-            print(excused)
-            print(excuse)
 
         if st.button("🔙 Sair", use_container_width=True):
             st.session_state.page = "login_page"

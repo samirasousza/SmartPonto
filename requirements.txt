@@ -1,0 +1,4 @@
+streamlit-autorefresh
+streamlit
+web3
+dotenv

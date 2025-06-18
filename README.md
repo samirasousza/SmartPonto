@@ -5,7 +5,7 @@
 <h4>Aquirir uma conexão com a rede testnet do Sepolia</h4>
 <h4>Coletar sua chave privada da carteira</h4>
 <h4>Adaptar estas informações no arquivo .env e no arquivo app.py</h4>
-<h2>Antes de executar a aplicação faça a instaação das dependências:</h2>
+<h2>Antes de executar a aplicação faça a instalação das dependências:</h2>
 <p>pip install -r requirements.txt</p>
 <h2>Para rodar a aplicação insira no terminal:</h2>
 <p>streamlit run app.py</p>
